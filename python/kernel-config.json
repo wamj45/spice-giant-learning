@@ -1,3 +1,5 @@
 {
-  "time_kernel": "/Users/wamj45/dev/spice-giant-learning/kernels/lsk/naif0012.tls"
+  "time_kernel": "/Users/wamj45/dev/spice-giant-learning/kernels/lsk/naif0012.tls",
+  "spk_kernel": "/Users/wamj45/dev/spice-giant-learning/kernels/spk/de440.bsp",
+  "pck_kernel": "/Users/wamj45/dev/spice-giant-learning/kernels/pck/pck00011.tpc"
 }
