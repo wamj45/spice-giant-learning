@@ -1,7 +1,7 @@
 import sys
 import os
 
-from time_conversion import TimeConverter
+from time_converter import TimeConverter
 
 
 def main():
