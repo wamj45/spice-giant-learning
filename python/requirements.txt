@@ -1,0 +1,5 @@
+spiceypy
+numpy
+scipy
+matplotlib
+opencv-python

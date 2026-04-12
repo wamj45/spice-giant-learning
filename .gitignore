@@ -1,0 +1,6 @@
+kernels/lsk
+kernels/pck
+kernels/spk
+
+**/__pycache__
+.venv
