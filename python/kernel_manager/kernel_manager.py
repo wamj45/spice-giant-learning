@@ -1,7 +1,8 @@
 from typing import Dict
 import json
 
-
+# @TODO:
+# This will need to be a python package
 class KernelManager:
     def __init__(self) -> None:
         self.kernel_config: Dict = {}
