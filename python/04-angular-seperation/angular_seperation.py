@@ -1,5 +1,4 @@
 import spiceypy
-import numpy as np
 import json
 
 AB_CORRECTION = "LT+S"
