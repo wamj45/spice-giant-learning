@@ -4,3 +4,4 @@ kernels/spk
 
 **/__pycache__
 .venv
+*.egg-info/
