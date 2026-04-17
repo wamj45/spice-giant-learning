@@ -19,7 +19,7 @@ def main():
 
     wrapper = SpiceWrapper()
     if wrapper.initialize(config_file) is False:
-        print("Failed to execute TimeConverter - Failed to load config file")
+        print("Failed to initialize SpiceWrapper")
         os._exit(101)
 
     TEST_TIMES = [
@@ -38,6 +38,8 @@ def main():
         wrapper.convert_et_calendar(et, verbose=True)
         wrapper.convert_et_to_utc(et, verbose=True)
         print()
+
+    wrapper.clear()
 
     print("Done!")
 

@@ -1,6 +1,8 @@
 import spiceypy
 
 from spice_wrapper.util.kernel_manager import KernelManager
+from spice_wrapper.models.position_data import PositionData
+from spice_wrapper.models.state_data import StateData
 
 
 class SpiceWrapper:
@@ -35,6 +37,10 @@ class SpiceWrapper:
             return False
 
         return True
+
+
+    def clear(self):
+        self.spice.kclear()
 
 
     def convert_utc_to_et(self, timestamp: str, verbose: bool=False) -> float:
@@ -92,8 +98,8 @@ class SpiceWrapper:
         return state_data
 
 
-    def distance_between_bodies(self, target: str, et: float, observer: str) -> float | None:
-        position_data = self.get_position(target, et, observer)
+    def distance_between_bodies(self, target: str, et: float, observer: str, ref_frame: str, ab_corr: str) -> float | None:
+        position_data = self.get_position(target, et, observer, ref_frame, ab_corr)
         if position_data is None:
             print(f"Failed to get distance for [{target}] - Invalid position data")
             return None

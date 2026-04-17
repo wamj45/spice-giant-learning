@@ -1,7 +1,7 @@
 import os
 import sys
 
-from state_query import StateQuerier
+from spice_wrapper.spice_wrapper import SpiceWrapper
 
 '''
 Query position, distance, and state of Mars relative to Earth
@@ -24,28 +24,25 @@ def main():
 
     config_file = sys.argv[1]
 
-    querier = StateQuerier(REF_FRAME, AB_CORRECTION)
-    if querier.load_config(config_file) is False:
-        print("Failed to load config file")
+    spice_wrapper = SpiceWrapper()
+    if spice_wrapper.initialize(config_file) is False:
+        print("Failed to intialize SpiceWrapper")
         os._exit(101)
 
     # Curiosity landing on Mars - 2012-08-06T05:17:57
     utc = "2012-08-06T05:17:57"
-    et = querier.spice.str2et(utc)
+    et = spice_wrapper.convert_utc_to_et(utc)
     print(f"====== Curiosity Landing: {utc} ======\n")
 
-    mars_wrt_earth_position = querier.get_position("MARS BARYCENTER", et, "EARTH")
+    mars_wrt_earth_position = spice_wrapper.get_position("MARS BARYCENTER", et, "EARTH", REF_FRAME, AB_CORRECTION)
     if mars_wrt_earth_position is None:
         print("Failed to get PositionData for [MARS] w.r.t [EARTH]")
         os._exit(102)
 
-    print("Mars position relative to Earth (km):")
-    print(f"  X: {mars_wrt_earth_position.position[0]:.3f}")
-    print(f"  Y: {mars_wrt_earth_position.position[1]:.3f}")
-    print(f"  Z: {mars_wrt_earth_position.position[2]:.3f}")
+    print(f"Mars position relative to Earth (km):\n{mars_wrt_earth_position.position_as_dict()}")
     print(f"  Light time: {mars_wrt_earth_position.light_time:.3f} seconds\n")
 
-    distance = querier.get_distance("MARS BARYCENTER", et, "EARTH")
+    distance = spice_wrapper.distance_between_bodies("MARS BARYCENTER", et, "EARTH", REF_FRAME, AB_CORRECTION)
     if distance is None:
         print("Failed to get distance from MARS to EARTH")
         os._exit(103)
@@ -53,16 +50,16 @@ def main():
     print(f"Distance Earth -> Mars: {distance:.3f} km")
     print(f"Distance Earth -> Mars: {distance / KM_PER_AU:.6f} AU\n")
 
-    mars_wrt_earth_state = querier.get_state("MARS BARYCENTER", et, "EARTH")
+    mars_wrt_earth_state = spice_wrapper.get_state("MARS BARYCENTER", et, "EARTH", REF_FRAME, AB_CORRECTION)
     if mars_wrt_earth_state is None:
         print("Failed to get StateData for [MARS] w.r.t [EARTH]")
         os._exit(104)
 
     print("Mars full state relative to Earth:")
-    print(f"  Position (km): [{mars_wrt_earth_state.state[0]:.1f}, {mars_wrt_earth_state.state[1]:.1f}, {mars_wrt_earth_state.state[2]:.1f}]")
-    print(f"  Velocity (km/s): [{mars_wrt_earth_state.state[3]:.3f}, {mars_wrt_earth_state.state[4]:.3f}, {mars_wrt_earth_state.state[5]:.3f}]")
+    print(f"\t{mars_wrt_earth_state.distance_as_dict()}")
+    print(f"\t{mars_wrt_earth_state.velocity_as_dict()}")
 
-    querier.spice.kclear()
+    spice_wrapper.clear()
 
     print("\nDone!")
 
