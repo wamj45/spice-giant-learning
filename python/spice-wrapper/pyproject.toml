@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spice_wrapper"
+version = "0.1.0"
+description = "Small Wrapper around SpicePy for local testing"
+requires-python = ">=3.9"
+
+dependencies = [
+    "spiceypy>=8.1.0",
+    "numpy >= 2.4.4"
+]

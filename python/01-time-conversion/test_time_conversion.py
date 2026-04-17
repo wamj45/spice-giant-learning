@@ -1,19 +1,24 @@
 import sys
 import os
 
-from time_converter import TimeConverter
+from spice_wrapper.spice_wrapper import SpiceWrapper
+
+'''
+Convert UTC time to ET time.
+Source: https://spiceypy.readthedocs.io/en/main/remote_sensing.html#solution
+'''
 
 
 def main():
     if len(sys.argv) < 2:
         print("Invalid arguements. Expected:")
-        print("\tpython3 time_conversion.py <config-file.json>")
+        print("\tpython3 test_time_conversion.py <config-file.json>")
         os._exit(100)
 
     config_file = sys.argv[1]
 
-    converter = TimeConverter()
-    if converter.load_config(config_file) is False:
+    wrapper = SpiceWrapper()
+    if wrapper.initialize(config_file) is False:
         print("Failed to execute TimeConverter - Failed to load config file")
         os._exit(101)
 
@@ -29,9 +34,9 @@ def main():
 
     for utc in TEST_TIMES:
         print(f"Testing with UTC: [{utc}]")
-        et = converter.convert_utc_to_et(utc, debug=True)
-        converter.convert_et_calendar(et, debug=True)
-        converter.convert_et_to_utc(et, debug=True)
+        et = wrapper.convert_utc_to_et(utc, verbose=True)
+        wrapper.convert_et_calendar(et, verbose=True)
+        wrapper.convert_et_to_utc(et, verbose=True)
         print()
 
     print("Done!")
